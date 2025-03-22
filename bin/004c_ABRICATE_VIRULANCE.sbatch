@@ -1,18 +1,19 @@
 #!/bin/bash
-#SBATCH --partition=defq       # the requested queue
-#SBATCH --nodes=1              # number of nodes to use
-#SBATCH --tasks-per-node=1     #
-#SBATCH --cpus-per-task=16     #
-#SBATCH --mem-per-cpu=1000     # in megabytes, unless unit explicitly stated
-#SBATCH --error=%J.err         # redirect stderr to this file
-#SBATCH --output=%J.out        # redirect stdout to this file
-##SBATCH --mail-user=[insert email address]@Cardiff.ac.uk  # email address used for event notification
-##SBATCH --mail-type=end                                   # email on job end
-##SBATCH --mail-type=fail                                  # email on job failure
+#SBATCH --partition=defq                        # the requested queue
+#SBATCH --nodes=1                               # number of nodes to use
+#SBATCH --tasks-per-node=1                      #
+#SBATCH --cpus-per-task=16                      #
+#SBATCH --mem-per-cpu=10000                     # in megabytes, unless unit explicitly stated
+#SBATCH --error=%J-ABRICATE-VIR-FACTORS.err     # redirect stderr to this file
+#SBATCH --output=%J-ABRICATE-VIR-FACTORS.out    # redirect stdout to this file
+#SBATCH --mail-user=shelleydr@Cardiff.ac.uk     # email address used for event notification
+#SBATCH --mail-type=end                         # email on job end
+#SBATCH --mail-type=fail                        # email on job failure
 
 echo "Some Usable Environment Variables:"
 echo "================================="
 echo "hostname=$(hostname)"
+echo `date "+%d_%m_%Y"`
 echo \$SLURM_JOB_ID=${SLURM_JOB_ID}
 echo \$SLURM_NTASKS=${SLURM_NTASKS}
 echo \$SLURM_NTASKS_PER_NODE=${SLURM_NTASKS_PER_NODE}
@@ -43,3 +44,7 @@ done
 
 
 abricate --summary ${vfdir}/*.tab > ${vfdir}/megares_summary.tab
+
+rm -- ${vfdir}/'*-megares.tab'
+
+module purge

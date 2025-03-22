@@ -14,6 +14,7 @@
 echo "Some Usable Environment Variables:"
 echo "================================="
 echo "hostname=$(hostname)"
+echo `date "+%d_%m_%Y"`
 echo \$SLURM_JOB_ID=${SLURM_JOB_ID}
 echo \$SLURM_NTASKS=${SLURM_NTASKS}
 echo \$SLURM_NTASKS_PER_NODE=${SLURM_NTASKS_PER_NODE}

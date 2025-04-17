@@ -51,11 +51,11 @@ export SINGULARITY_CACHEDIR=${CACHEDIR}   # Singularity Cache
 export APPTAINER_CACHEDIR=${CACHEDIR}     # Apptainer Cache
 export TMPDIR=${TMPDIR}                   # Temp storage directory 
 
-if [ -f /mnt/scratch/$USER/singularity/cache/meren_anvio.sif ]; then                             # See if the Image is already downloaded
+if [ -f ${SINGULARITY_IMG} ]; then                             # See if the Image is already downloaded
     echo "Docker image exists - skipping download."
 else
     echo "Docker image does not exist - downloading ${IMAGENAME}"
-    singularity pull /mnt/scratch/$USER/singularity/cache/meren_anvio.sif docker://${IMAGENAME} # Install the image (image is docker and needs docker://)
+    singularity pull ${SINGULARITY_IMG} docker://${IMAGENAME} # Install the image (image is docker and needs do$
 fi
 
 # ~~~~~~~~~~ CONTAINER AND ANVIO ~~~~~~~~~~
@@ -103,7 +103,7 @@ do
     # -c = Contig.db directory
     # --num-threads = Number of threads  (using 1 is super slow)
 
-    anvi-run-ncbi-cogs -c ${ANVIODB}/\${NAME}.db --num-threads ${SLURM_CPUS_PER_TASK} --cog-data-dir ${CONTAINERDIR}/.COG
+    anvi-run-ncbi-cogs -c ${ANVIODB}/\${NAME}.db --num-threads ${SLURM_CPUS_PER_TASK} --cog-data-dir ${COGDB}
     # -c = Contig.db directory
     # --num-threads = Number of threads  (using 1 is super slow)
     # --cog-data-dir = The NCBI COG data base (see README.md on how to install ---- when I make it...)

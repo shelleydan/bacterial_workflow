@@ -26,23 +26,29 @@ date=`date "+%d_%m_%Y"`
 
 module load abricate/
 
-workdir=$(pwd)
+WORKDIR=$(pwd)
+GENOMES=${WORKDIR}/output/genomes/FinalGenomes
 
-mkdir ${workdir}/output/amr_megares
-amrdir=${workdir}/output/amr_megares
+mkdir ${WORKDIR}/output/amr_megares
+amrdir=${WORKDIR}/output/amr_megares
 
 
-for f in ${rawdir}/*_R1.fastq* #Listing all files in the ra$
+for f in ${GENOMES}/*.fasta #Listing all files in the ra$
 do
-R1=$(basename $f | cut -f1 -d.) #divide by the '.' and take t$
-base=$(echo $R1 | sed 's/_R1//') #Removes the '_R1_ e..g viru$
+#R1=$(basename $f | cut -f1 -d.) #divide by the '.' and take t$
+
+base=$(basename "${f}" .fasta)
+
+#base=$(echo $R1 | sed 's/_R1//') #Removes the '_R1_ e..g viru$
 echo ${base}
 
-abricate --db megares --threads ${SLURM_CPUS_PER_TASK} ${workdir}/output/genomes/${base}/assembly.fasta > ${amrdir}/${base}-megares.tab
+abricate --db cardiffamr --datadir /mnt/scratch/c2006576/bacterial_workflow/DB --threads ${SLURM_CPUS_PER_TASK} ${GENOMES}/${base}.fasta > ${amrdir}/${base}_megares.tab
 
 done
 
-abricate --summary ${amrdir}/*-megares.tab > ${amrdir}/megares_summary_${date}.tab
+abricate --summary ${amrdir}/*_megares.tab > ${amrdir}/megares_summary_${date}.tab
 
-rm -- ${amrdir}/'*-megares.tab'
+sed -E 's#.*/(.*)_megares\.tab#\1#' ${amrdir}/megares_summary_${date}.tab > ${amrdir}/AMR_modified_file_${date}.tab
+
+#rm -- ${amrdir}/'*-megares.tab'
 module purge

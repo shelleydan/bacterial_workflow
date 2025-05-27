@@ -25,7 +25,7 @@ echo \$SLURM_MEM_PER_CPU=${SLURM_MEM_PER_CPU}
 
 # ~~~~~~~~~~ VARIABLES & CONFIG ~~~~~~~~~~ #
 
-source workflow.config
+#source workflow.config
 
 WORKDIR=$(pwd)
 DB_FOLDER=/mnt/scratch/c2006576/bacterial_workflow/DB
@@ -73,6 +73,8 @@ cd-hit-est -i ${DB_FOLDER}/cardiffamr/cardiffamr.fa -o ${DB_FOLDER}/cardiffamr/c
 cp -fv ${DB_FOLDER}/cardiffamr/cdhit ${DB_FOLDER}/cardiffamr/sequences
 
 makeblastdb -in ${DB_FOLDER}/cardiffamr/sequences -title cardiffamr -taxid 2 -dbtype nucl |& tee ${DB_FOLDER}/cardiffamr/makeblastdb.log
+
+abricate --datadir ${DB_FOLDER}
 
 module purge
 
